@@ -1,25 +1,31 @@
-# A file containing the implementation of a Feistel cipher
+""" A file containing the implementation of a Feistel cipher"""
 
 
 class Feistel():
     """ A balanced Feistel network.
     
     The network uses any cryptographic function to encrypt or decrypt a
-    message using a balanced Feistel network. """
+    message using a balanced Feistel network. 
+
+    Cryptographic functions:
+        Any function which accepts as parameters an int and a float and 
+        which returns an int can be used as the cryptographic function.
+    """
     def __init__(self, func):
         """Initialize Feistel attributes"""
         self.cryptographic_function = func
-        return
+        return 
 
     def encrypt(self, input: str, keys: list) -> str:
-        """ Perform the encryption on the given message.
+        """ Perform the encryption algorithm on the given message.
 
-        message: A string to be encrypted
-        rounds: The number of rounds of encryption to perform
-        keys(optional): A list of keys used in the encryption, which are
-            passed to the cryptographic function
+    message: A string to be encrypted
+    keys: A list of keys used in the encryption, which are
+        passed to the cryptographic function. The network will 
+        perform 1 round of encryption for each key. 
         
-        returns: the excrypted message. """
+    returns: the encrypted message. 
+        """
         # Split the input into parts
         left, right = self.split(input)
 
@@ -39,45 +45,43 @@ class Feistel():
         return output_right + output_left
 
     def split(self, input: str) -> int:
-        """ A function to split the input to self.encrypt in halfs.
+        """ A function to split the input of self.encrypt in halfs.
         
-        input: the original input to be split. If the string has an odd 
-            length, a space is appended to the end. 
-        Returns a list of ascii values of each character in the input. """
-        # If the input has an odd number of characters, append a space
-        #   to the end.
-        if len(input) % 2 != 0:
-            input += ' '
-
+    input: the original input to be split in half. If the string has 
+        an odd number of characters, one side will be 1 character
+        longer than the other.
+    returns: an int encoding the characters in input. 
+        """
+        # Divide the input in half.
         left = input[:len(input)//2]
         right = input[len(input)//2:]
 
+        # Get the character code for each character in the input
         l =  [ord(c) for c in left]
         r = [ord(c) for c in right]
 
         left = 0
         right = 0
 
+        # Combine the list of ints into 1 unique number coding the input.
         for i in range(len(l) - 1, -1, -1):
             left += l[i] * (10**(i*3))
         for i in range(len(r) - 1, -1, -1):
             right += r[i] * (10**(i*3))
         
         return left, right
-        # TODO: Maybe larger strings should be split into smaller chunks
-        #   after being split in half
 
 
     def rejoin(self, input: int) -> str:
         """Recreate a string from an int. """
-        # divide the int into groups of 3
+        # Divide the int into groups of 3, representing 1 character each.
         chars = []
         while input > 0:
             chars.append(input % 1000)
             input //= 1000
 
-        # get the ASCII character of each group
+        # Get the character coded by each group
         chars = [chr(i) for i in chars]
 
-        # combine the string
+        # Combine the string.
         return ''.join(chars)

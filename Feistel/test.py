@@ -14,7 +14,7 @@ s3 = ''
 with open('test.txt', 'r') as datafile:
     s3 = datafile.read()
 
-f = Feistel(test_functions.test_func1)
+f = Feistel(test_functions.test_func3)
 
 # create a set of random keys for encryption
 keys= [secrets.randbits(16) for i in range(0, 13)]
