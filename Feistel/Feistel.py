@@ -7,7 +7,8 @@ class Feistel():
     The network uses any cryptographic function to encrypt or decrypt a
     message using a balanced Feistel network. 
 
-    Cryptographic functions:
+    cryptographic_function:
+        The function used during the encryption process.
         Any function which accepts as parameters an int and a float and 
         which returns an int can be used as the cryptographic function.
     """
@@ -16,18 +17,21 @@ class Feistel():
         self.cryptographic_function = func
         return 
 
-    def encrypt(self, input: str, keys: list) -> str:
+    def encrypt(self, input: str, keys: list, ) -> str:
         """ Perform the encryption algorithm on the given message.
 
-    message: A string to be encrypted
-    keys: A list of keys used in the encryption, which are
+    message: 
+        A string to be encrypted
+    keys: 
+        A list of keys used in the encryption, which are
         passed to the cryptographic function. The network will 
         perform 1 round of encryption for each key. 
         
-    returns: the encrypted message. 
+    returns:
+        the encrypted message. 
         """
         # Split the input into parts
-        left, right = self.split(input)
+        left, right = self._split(input)
 
         for key in keys:
             # pass the right side into the cryptographic function and XOR
@@ -39,18 +43,20 @@ class Feistel():
             left, right = new_left, new_right
             
         # Flip the halfs, and return the result as a string
-        output_left = self.rejoin(left)
-        output_right = self.rejoin(right)
+        output_left = self._rejoin(left)
+        output_right = self._rejoin(right)
 
         return output_right + output_left
 
-    def split(self, input: str) -> int:
+    def _split(self, input: str) -> int:
         """ A function to split the input of self.encrypt in halfs.
         
-    input: the original input to be split in half. If the string has 
+    input: 
+        the original input to be split in half. If the string has 
         an odd number of characters, one side will be 1 character
         longer than the other.
-    returns: an int encoding the characters in input. 
+    returns: 
+        an int encoding the characters in input. 
         """
         # Divide the input in half.
         left = input[:len(input)//2]
@@ -72,7 +78,7 @@ class Feistel():
         return left, right
 
 
-    def rejoin(self, input: int) -> str:
+    def _rejoin(self, input: int) -> str:
         """Recreate a string from an int. """
         # Divide the int into groups of 3, representing 1 character each.
         chars = []

@@ -26,7 +26,7 @@
     <Compile Include="test.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="test_functions.py">
+    <Compile Include="sample_functions.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
